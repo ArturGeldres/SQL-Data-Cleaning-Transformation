@@ -39,6 +39,7 @@ Generación de Emails: Creación automatizada de correos corporativos basados en
 📈 Resultado Final
 El script culmina en la creación de una Vista (View) optimizada que filtra registros inválidos y presenta la información lista para el análisis de indicadores clave (KPIs) de RRHH.
 
+<img width="1622" height="1018" alt="sql querys en mysql" src="https://github.com/user-attachments/assets/a7730b28-b462-4b73-9da3-4db6cdeedf50" />
 
 👤 Autor
 
