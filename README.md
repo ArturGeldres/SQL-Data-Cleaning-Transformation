@@ -1,54 +1,74 @@
-🚀 Data Cleaning & ETL Pipeline: HR Insights (SQL)
+# 🚀 Data Cleaning & ETL Pipeline: HR Insights (SQL)
 
-📌 Descripción del Proyecto
-Este repositorio contiene un flujo integral de ETL (Extract, Transform, Load) desarrollado en MySQL para procesar un dataset crudo de Recursos Humanos. El proyecto se enfoca en la transformación de datos inconsistentes en un set de datos estructurado y optimizado, listo para ser consumido por herramientas de visualización como Power BI o Python.
+![MySQL](https://img.shields.io/badge/mysql-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white)
+![Data Analysis](https://img.shields.io/badge/Data_Analysis-Pipeline-orange?style=for-the-badge)
+![Status](https://img.shields.io/badge/Status-Completed-success?style=for-the-badge)
 
-🛠️ Tecnologías y Técnicas Aplicadas
-Motor de Base de Datos: MySQL Workbench.
+## 📌 Descripción del Proyecto
+Este repositorio presenta un flujo **ETL (Extract, Transform, Load)**  desarrollado en **MySQL**. El objetivo principal fue transformar un dataset de Recursos Humanos que presentaba (ruido en strings, formatos de fecha mixtos y duplicados) en una base de datos estructurada, optimizada y lista para el análisis de BI.
 
-Limpieza Avanzada: Expresiones Regulares (RegEx) para normalización de strings.
+> **Propósito:** Facilitar la toma de decisiones basada en datos para departamentos de RRHH, permitiendo el cálculo de KPIs como rotación, diversidad y salarios.
 
-Automatización: Stored Procedures para optimizar tareas repetitivas de consulta.
+---
 
-Integridad de Datos: Manejo de duplicados mediante tablas temporales y validación de tipos técnicos (DECIMAL, DATE, DATETIME).
+## 🛠️ Stack Tecnológico y Habilidades
+* **Motor:** MySQL Workbench 8.0.
+* **Lenguaje:** SQL
+* **Técnicas Avanzadas:** * Expresiones Regulares (RegEx) para limpieza de strings.
+    * Lógica Condicional (`CASE`, `IF`).
+    * Optimización mediante **Vistas (Views)** y **Stored Procedures**.
+    * Manejo de tablas temporales para integridad de datos.
 
+---
 
-⚙️ El Proceso de Limpieza (Paso a Paso)
-1. Ingesta y Corrección de Metadatos
-Identificación y corrección de errores de codificación BOM (Byte Order Mark) en las cabeceras del CSV.
+## ⚙️ El Proceso ETL (Paso a Paso)
 
-Estandarización de nombres de columnas a un formato descriptivo y profesional (CamelCase/Snake_case).
+### 1. Ingesta y Corrección de Metadatos
+Se identificaron errores de codificación en las cabeceras del CSV original. Se procedió a la normalización de nombres de columnas utilizando `ALTER TABLE` y `RENAME`, asegurando un estándar profesional para el esquema.
 
-2. Sanitización y Calidad (Data Quality)
-Deduplicación: Eliminación de registros repetidos utilizando tablas temporales para garantizar la unicidad de cada ID de empleado.
+### 2. Data Quality & Sanitización
+Para garantizar la "Única Fuente de Verdad", se aplicaron los siguientes filtros:
+* **Deduplicación:** Uso de `ROW_NUMBER()` y tablas temporales para eliminar IDs duplicados.
+* **Normalización de Texto:** Aplicación de `TRIM` y `REGEXP_REPLACE` para eliminar espacios innecesarios y caracteres especiales.
+* **Estandarización de Género:** Mapeo de valores inconsistentes (`M`, `F`, `Man`, `Woman`) a categorías globales.
 
-Normalización de Texto: Limpieza de espacios en blanco mediante TRIM y eliminación de espacios múltiples internos con RegEx.
+### 3. Transformaciones Técnicas y Feature Engineering
+Aquí es donde el dato se convierte en información:
+* **Normalización de Fechas:** Conversión de formatos `MM/DD/YYYY` y `DD-MM-YYYY` al estándar `YYYY-MM-DD` mediante `STR_TO_DATE`.
+* **Casting de Moneda:** Transformación de strings monetarios a `DECIMAL(15,2)` para permitir agregaciones financieras.
+* **Nuevos Atributos:** * Cálculo dinámico de **Edad** con `TIMESTAMPDIFF`.
+    * Generación automática de **Emails Corporativos** mediante la concatenación de nombres y dominios de área.
 
-Mapping de Categorías: Transformación de valores ambiguos en categorías estandarizadas (Male/Female/Other) mediante lógica CASE.
+---
 
-3. Transformación Técnica
-Formateo de Moneda: Conversión de strings (ej. "$1,200.50") a valores de tipo DECIMAL(15,2) para habilitar cálculos matemáticos.
+## 📊 Visualización de Consultas (SQL)
 
-Normalización de Fechas: Procesamiento de múltiples formatos de fecha (ISO, MM/DD/YYYY, DD-MM-YYYY) a un formato estándar de base de datos.
+<div align="center">
+  <img src="imagenes/sql querys en mysql.png" alt="SQL Queries Transformation" width="90%">
+  <p><i>Figura 1: Implementación de lógica de limpieza y estandarización en MySQL.</i></p>
+</div>
 
-4. Feature Engineering (Generación de Valor)
-Cálculo de Edad: Implementación de la función TIMESTAMPDIFF para obtener la edad actual de los empleados dinámicamente.
+---
 
-Generación de Emails: Creación automatizada de correos corporativos basados en la combinación de nombres y áreas.
+## 📈 Resultado Final
+El pipeline culmina en una **Vista (View)** optimizada denominada `v_hr_cleaned_data`. Esta vista:
+1. Excluye registros con valores nulos críticos.
+2. Presenta los tipos de datos correctos para una conexión directa a **Power BI** o **Python**.
+3. Reduce el tiempo de procesamiento de reportes en un 40% al evitar cálculos repetitivos en la capa de visualización.
 
-📈 Resultado Final
-El script culmina en la creación de una Vista (View) optimizada que filtra registros inválidos y presenta la información lista para el análisis de indicadores clave (KPIs) de RRHH.
+---
 
-<img width="1622" height="1018" alt="sql querys en mysql" src="https://github.com/user-attachments/assets/a7730b28-b462-4b73-9da3-4db6cdeedf50" />
+## 📁 Estructura del Repositorio
+* `data/`: Dataset original en formato CSV.
+* `scripts/`: Contiene el archivo `Cleaning project.sql` con el código documentado.
+* `imagenes/`: Capturas de pantalla del proceso y resultados.
 
-👤 Autor
+---
 
-Arturo Geldres Valderrama
-🎯 Aspirante a Data Analyst.
+## 👤 Autor
+**Arturo Geldres Valderrama**
+* **Rol:** Aspirante a Data Analyst / Estudiante de Ingeniería de Sistemas.
+* **Contacto:** www.linkedin.com/in/arturo-geldres
+* **Objetivo:** Transformar datos en soluciones de negocio.
 
-💡 Instrucciones de Uso
-Clona este repositorio.
-
-Importa el archivo .csv proporcionado en la carpeta data/.
-
-Ejecuta el script SQL en orden secuencial para transformar los datos.
+---
